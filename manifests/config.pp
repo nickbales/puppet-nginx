@@ -13,13 +13,25 @@ class nginx::config(
 ) {
 
   file { 'nginx_conf':
-    ensure => $ensure,
-    path   => "${config_dir}/nginx.com",
-    mode   => $mode,
-    owner  => $owner,
-    group  => $group,
+    ensure  => $ensure,
+    path    => "${config_dir}/nginx.com",
+    mode    => $mode,
+    owner   => $owner,
+    group   => $group,
     content => template("${module_name}/conf.d/nginx.conf.erb"),
   }
 
-  
+  file { $log_dir:
+    ensure  => directory,
+    recurse => true,
+  }
+ 
+  file { $docroot:
+    ensure  => directory,
+    recurse => true,
+    mode    => $mode,
+    owner   => $owner,
+    group   => $group,
+  }
+ 
 }
